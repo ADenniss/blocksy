@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08100d" />
+  <title>Blocksy: Wildforge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Blocksy home">
+        <span class="brand-cube"><i></i></span>
+        <span>BLOCKSY</span>
+        <small>WILDFORGE</small>
+      </a>
+      <div class="world-status">
+        <span class="status-dot"></span>
+        <span id="biomeLabel">Mosswood Basin</span>
+        <span class="divider"></span>
+        <span id="dayLabel">DAY 1 · DAWN</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" id="soundButton" aria-label="Toggle sound">♪</button>
+        <button class="key-button" id="craftButton"><kbd>C</kbd> CRAFT</button>
+        <button class="icon-button" id="pauseButton" aria-label="Pause game">Ⅱ</button>
+      </div>
+    </header>
+
+    <section class="game-stage" id="gameStage">
+      <canvas id="gameCanvas" aria-label="Blocksy game world"></canvas>
+
+      <div class="hud-layer">
+        <aside class="quest-card glass">
+          <div class="eyebrow"><span class="pulse"></span> ACTIVE RITUAL</div>
+          <h2 id="questTitle">Break the wild seal</h2>
+          <p id="questCopy">Defeat monsters to charge the ancient gate.</p>
+          <div class="progress-track"><span id="questProgress"></span></div>
+          <div class="progress-meta"><span id="questCount">0 / 12 defeated</span><b id="threatLabel">LOW THREAT</b></div>
+        </aside>
+
+        <div class="boss-hud hidden" id="bossHud">
+          <div class="boss-heading"><span>WORLD BOSS</span><b id="bossName">DREADROOT COLOSSUS</b></div>
+          <div class="boss-track"><span id="bossHealth"></span></div>
+        </div>
+
+        <aside class="materials-panel glass" id="materialsPanel">
+          <div class="panel-heading">
+            <span>MATERIALS</span>
+            <button id="collapseMaterials" aria-label="Collapse materials">−</button>
+          </div>
+          <div class="material-grid" id="materialGrid"></div>
+        </aside>
+
+        <div class="interaction-hint hidden" id="interactionHint"><kbd>STEP IN</kbd><span>ENTER THE RIFT</span></div>
+
+        <div class="players-hud">
+          <article class="player-card p1-card">
+            <div class="player-gem p1">1</div>
+            <div class="player-info">
+              <div class="player-name"><b>NOVA</b><span id="p1WeaponName">WOODEN BLADE</span></div>
+              <div class="health-track"><span id="p1Health"></span></div>
+              <div class="stamina-track"><span id="p1Stamina"></span></div>
+            </div>
+            <div class="player-level">LV.<b id="p1Level">1</b></div>
+          </article>
+          <div class="round-counter"><span>WAVE</span><b id="waveLabel">01</b></div>
+          <article class="player-card p2-card">
+            <div class="player-gem p2">2</div>
+            <div class="player-info">
+              <div class="player-name"><b>ROOK</b><span id="p2WeaponName">WOODEN BLADE</span></div>
+              <div class="health-track"><span id="p2Health"></span></div>
+              <div class="stamina-track"><span id="p2Stamina"></span></div>
+            </div>
+            <div class="player-level">LV.<b id="p2Level">1</b></div>
+          </article>
+        </div>
+      </div>
+
+      <section class="start-screen overlay active" id="startScreen">
+        <div class="start-art" aria-hidden="true">
+          <div class="rune rune-a"></div><div class="rune rune-b"></div><div class="rune rune-c"></div>
+        </div>
+        <div class="start-content">
+          <div class="kicker">A TWO-PLAYER WILDERNESS ADVENTURE</div>
+          <h1>GATHER.<br><em>FORGE.</em> SURVIVE.</h1>
+          <p>Carve a path through the Mosswood, craft legendary weapons, and stand together against the thing sleeping beyond the rift.</p>
+          <button class="primary-button" id="startButton"><span>ENTER THE WILDS</span><b>→</b></button>
+          <div class="controls-preview">
+            <div><span class="control-player p1">P1</span><kbd>WASD</kbd><small>MOVE</small><kbd>F</kbd><small>ATTACK</small><kbd>G</kbd><small>DASH</small></div>
+            <div><span class="control-player p2">P2</span><kbd>ARROWS</kbd><small>MOVE</small><kbd>K</kbd><small>ATTACK</small><kbd>L</kbd><small>DASH</small></div>
+          </div>
+        </div>
+        <div class="build-tag">BUILD 1.0 · LOCAL CO-OP</div>
+      </section>
+
+      <section class="craft-screen overlay" id="craftScreen" aria-hidden="true">
+        <div class="craft-window glass-heavy">
+          <header class="craft-header">
+            <div>
+              <div class="eyebrow">WILDFORGE WORKBENCH</div>
+              <h2>Craft your advantage</h2>
+            </div>
+            <div class="craft-actions">
+              <div class="equip-target" id="equipTarget">
+                <span>EQUIP TO</span>
+                <button class="active" data-player="0">P1 NOVA</button>
+                <button data-player="1">P2 ROOK</button>
+              </div>
+              <button class="close-button" id="closeCraft">×</button>
+            </div>
+          </header>
+          <div class="craft-body">
+            <nav class="recipe-tabs" id="recipeTabs">
+              <button class="active" data-filter="all">ALL</button>
+              <button data-filter="weapon">WEAPONS</button>
+              <button data-filter="supply">SUPPLIES</button>
+            </nav>
+            <div class="recipes" id="recipeList"></div>
+          </div>
+          <footer class="craft-footer">
+            <span>Resources are shared between both players</span>
+            <div id="craftMaterials"></div>
+          </footer>
+        </div>
+      </section>
+
+      <section class="pause-screen overlay" id="pauseScreen" aria-hidden="true">
+        <div class="message-panel glass-heavy">
+          <div class="eyebrow">THE WILDS ARE WAITING</div>
+          <h2>Paused</h2>
+          <p>Catch your breath. The monsters won't move until you do.</p>
+          <button class="primary-button small" id="resumeButton"><span>RETURN TO BATTLE</span><b>→</b></button>
+          <button class="text-button" id="restartFromPause">RESTART RUN</button>
+        </div>
+      </section>
+
+      <section class="end-screen overlay" id="endScreen" aria-hidden="true">
+        <div class="message-panel glass-heavy">
+          <div class="end-sigil" id="endSigil">✦</div>
+          <div class="eyebrow" id="endEyebrow">RIFT CONQUERED</div>
+          <h2 id="endTitle">The wilds remember.</h2>
+          <p id="endCopy">Together, you shattered the ancient corruption.</p>
+          <div class="run-stats">
+            <div><b id="statMonsters">0</b><span>MONSTERS</span></div>
+            <div><b id="statMaterials">0</b><span>MATERIALS</span></div>
+            <div><b id="statCrafted">0</b><span>CRAFTED</span></div>
+          </div>
+          <button class="primary-button small" id="restartButton"><span>PLAY AGAIN</span><b>↻</b></button>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer-bar">
+      <div><span class="online-dot"></span>2 PLAYERS READY</div>
+      <div class="footer-tip"><kbd>C</kbd> CRAFT ANYWHERE <span>·</span> Monsters get stronger each wave</div>
+      <div>COOPERATIVE WORLD <b>∞</b></div>
+    </footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
