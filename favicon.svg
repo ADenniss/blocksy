@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Blocksy</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop stop-color="#07100d"/>
+      <stop offset=".58" stop-color="#173528"/>
+      <stop offset="1" stop-color="#527246"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="22%" r="50%">
+      <stop stop-color="#b9ef66" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#b9ef66" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <rect width="64" height="64" rx="14" fill="url(#glow)"/>
+  <circle cx="32" cy="32" r="25" fill="none" stroke="#b9ef66" stroke-opacity=".17" stroke-dasharray="2 4"/>
+  <path d="m32 12 19 10.5v19L32 52 13 41.5v-19L32 12Z" fill="#b9ef66" fill-opacity=".07" stroke="#c9f781" stroke-opacity=".86" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="m13 22.5 19 10.7 19-10.7M32 33.2V52" fill="none" stroke="#c9f781" stroke-opacity=".64" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="m32 22 9 5v10l-9 5-9-5V27l9-5Z" fill="#b9ef66" fill-opacity=".2" stroke="#e4ffb5" stroke-width="1.5"/>
+  <rect x="29" y="29" width="6" height="6" rx="1.5" fill="#e9ffc2" transform="rotate(30 32 32)"/>
+</svg>
