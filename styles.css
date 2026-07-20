@@ -87,6 +87,8 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .boss-track span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, #c8332c, #ff7258); box-shadow: 0 0 13px rgba(255,75,48,.5); transition: width .15s ease; }
 
 .players-hud { position: absolute; bottom: 17px; left: 50%; display: flex; align-items: center; gap: 8px; transform: translateX(-50%); }
+.players-hud.solo .p2-card { display: none; }
+.players-hud.solo .player-card { width: 270px; }
 .player-card { display: flex; align-items: center; gap: 9px; width: 238px; height: 54px; padding: 8px 10px; border-radius: 9px; background: rgba(5,14,11,.9); border: 1px solid var(--line); box-shadow: 0 12px 45px rgba(0,0,0,.35); }
 .player-gem { display: grid; place-items: center; flex: 0 0 34px; height: 34px; clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%); color: #142017; font: 800 12px "DM Mono", monospace; }
 .player-gem.p1 { background: var(--p1); } .player-gem.p2 { background: var(--p2); }
@@ -116,6 +118,14 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .start-content h1 { margin: 14px 0 16px; font-size: clamp(42px, 6vw, 82px); line-height: .88; letter-spacing: -.065em; text-transform: uppercase; text-shadow: 0 6px 40px rgba(0,0,0,.5); }
 .start-content h1 em { color: transparent; font-style: normal; -webkit-text-stroke: 1px var(--acid); filter: drop-shadow(0 0 15px rgba(185,239,102,.15)); }
 .start-content > p { max-width: 510px; color: #8fa095; font-size: 12px; line-height: 1.7; }
+.mode-select { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 500px; max-width: 100%; margin-top: 18px; }
+.mode-card { position: relative; display: flex; align-items: center; gap: 11px; height: 56px; padding: 0 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: rgba(255,255,255,.035); color: #77867d; text-align: left; cursor: pointer; transition: .22s ease; }
+.mode-card::after { content:""; position:absolute; inset:0; opacity:0; background:linear-gradient(110deg,rgba(185,239,102,.12),transparent 60%); transition:.22s; }
+.mode-card:hover { border-color: rgba(185,239,102,.3); color: #cbd6cc; transform: translateY(-1px); }
+.mode-card.active { border-color: rgba(185,239,102,.52); background: rgba(185,239,102,.075); color: var(--acid); box-shadow: inset 0 0 22px rgba(185,239,102,.035); }
+.mode-card.active::after { opacity:1; }
+.mode-card > * { position:relative; z-index:1; }.mode-card .mode-icon { display:grid; place-items:center; width:32px; height:32px; flex:0 0 32px; border-radius:6px; background:rgba(185,239,102,.08); color:var(--acid); font-size:13px; }.mode-card .mode-icon.duo { color:var(--p2); font-size:9px; letter-spacing:-3px; }
+.mode-card > span:nth-child(2) { display:flex; flex-direction:column; line-height:1; }.mode-card b { font-size:10px; letter-spacing:.08em; }.mode-card small { margin-top:6px; color:#64736a; font:500 6px "DM Mono",monospace; letter-spacing:.08em; }.mode-card i { margin-left:auto; color:#536159; font:500 9px "DM Mono",monospace; font-style:normal; }
 .primary-button { display: flex; align-items: center; justify-content: space-between; width: 230px; height: 50px; margin-top: 24px; padding: 0 7px 0 20px; border: 0; border-radius: 7px; background: var(--acid); color: #10190f; font-size: 10px; font-weight: 800; letter-spacing: .12em; cursor: pointer; box-shadow: 0 0 35px rgba(185,239,102,.16); transition: transform .2s, box-shadow .2s; }
 .primary-button b { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 5px; background: rgba(8,20,8,.12); font-size: 17px; }.primary-button:hover { transform: translateY(-2px); box-shadow: 0 8px 38px rgba(185,239,102,.27); }
 .controls-preview { display: flex; gap: 26px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
@@ -159,5 +169,6 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
   .players-hud { bottom:8px; gap:3px; }.player-card { width:145px; height:46px; padding:6px; }.player-gem { flex-basis:28px; height:28px; }.player-name span,.player-level { display:none; }.round-counter { width:35px;height:35px; }
   .quest-card { top:8px;left:8px; }
   .controls-preview { flex-direction:column;gap:8px; }
+  .mode-select { grid-template-columns:1fr; width:260px; }.mode-card { height:46px; }.start-content h1 { font-size:38px; }.start-content > p { font-size:10px; }.primary-button { margin-top:14px; }.controls-preview { margin-top:14px; padding-top:12px; }
   .recipes { grid-template-columns:1fr; }.craft-body { grid-template-columns:80px 1fr; }.craft-window { height:94%; }.equip-target span {display:none;}.craft-header {padding:14px;}.recipe-tabs {padding:10px 5px;}.recipe-tabs button {font-size:7px;padding:0 6px;}.craft-footer {padding:8px 14px;}.craft-footer>span {display:none;}
 }

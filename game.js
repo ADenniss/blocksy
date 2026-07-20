@@ -33,7 +33,8 @@
     emberblade: { name: "Emberbrand", icon: "‡", type: "melee", damage: 36, rate: .34, range: 70, color: "#ff764d", burn: true },
     staff: { name: "Prism Staff", icon: "⚶", type: "ranged", damage: 31, rate: .48, range: 460, speed: 560, color: "#70e5e3", pierce: 2 },
     voidpike: { name: "Void Pike", icon: "↟", type: "ranged", damage: 50, rate: .62, range: 520, speed: 620, color: "#bb83ff", pierce: 3 },
-    bossaxe: { name: "Colossus Axe", icon: "⚒", type: "melee", damage: 68, rate: .58, range: 86, color: "#d8ff7a" }
+    bossaxe: { name: "Colossus Axe", icon: "⚒", type: "melee", damage: 68, rate: .58, range: 86, color: "#d8ff7a" },
+    starcaster: { name: "Starcaster", icon: "✣", type: "ranged", damage: 59, rate: .45, range: 560, speed: 680, color: "#f1a5ff", pierce: 4 }
   };
 
   const RECIPES = [
@@ -43,6 +44,8 @@
     { id: "emberblade", category: "weapon", icon: "‡", name: "Emberbrand", copy: "A blade with a hungry flame.", cost: { iron: 5, ember: 6, bone: 3 }, stats: ["36 DMG", "BURN"] },
     { id: "staff", category: "weapon", icon: "⚶", name: "Prism Staff", copy: "Piercing bolts of living crystal.", cost: { wood: 4, crystal: 7, slime: 3 }, stats: ["31 DMG", "PIERCE"] },
     { id: "voidpike", category: "weapon", icon: "↟", name: "Void Pike", copy: "Forbidden reach from beyond.", cost: { iron: 8, crystal: 5, void: 5 }, stats: ["50 DMG", "MYTHIC"] },
+    { id: "bossaxe", category: "weapon", icon: "⚒", name: "Colossus Axe", copy: "A boss-breaking relic of the old grove.", cost: { wood: 9, iron: 7, hide: 5, void: 2 }, stats: ["68 DMG", "RELIC"] },
+    { id: "starcaster", category: "weapon", icon: "✣", name: "Starcaster", copy: "Launches a lance through entire hordes.", cost: { crystal: 10, ember: 7, void: 8 }, stats: ["59 DMG", "PIERCE 4"] },
     { id: "salve", category: "supply", icon: "+", name: "Wild Salve", copy: "Restores 45 health to both heroes.", cost: { fiber: 4, slime: 3 }, stats: ["+45 HP", "BOTH"] },
     { id: "ward", category: "supply", icon: "◇", name: "Stone Ward", copy: "Raises maximum health this run.", cost: { stone: 7, crystal: 2 }, stats: ["+20 MAX", "BOTH"] },
     { id: "tonic", category: "supply", icon: "↑", name: "Ember Tonic", copy: "Boosts all damage for 25 seconds.", cost: { ember: 4, slime: 2 }, stats: ["+35% DMG", "25 SEC"] }
@@ -50,12 +53,29 @@
 
   const MONSTERS = {
     slime: { name: "Moss Slime", hp: 38, speed: 46, damage: 8, size: 18, color: "#67b85f", drop: ["slime", "fiber"], xp: 12 },
+    shroom: { name: "Spore Shaman", hp: 46, speed: 39, damage: 9, size: 19, color: "#d48cca", drop: ["fiber", "slime", "crystal"], xp: 15 },
+    spider: { name: "Gloom Spider", hp: 42, speed: 91, damage: 11, size: 17, color: "#786a8f", drop: ["fiber", "hide", "void"], xp: 17 },
     wolf: { name: "Bramble Wolf", hp: 52, speed: 77, damage: 10, size: 19, color: "#9b7f59", drop: ["hide", "fiber"], xp: 16 },
     skeleton: { name: "Hollow Guard", hp: 68, speed: 52, damage: 13, size: 20, color: "#c9c5a8", drop: ["bone", "iron"], xp: 20 },
     ember: { name: "Cinder Imp", hp: 64, speed: 65, damage: 15, size: 18, color: "#e66f43", drop: ["ember", "stone"], xp: 22 },
     eye: { name: "Void Watcher", hp: 82, speed: 46, damage: 17, size: 21, color: "#9b70d2", drop: ["void", "crystal"], xp: 27 },
-    golem: { name: "Ironhide Golem", hp: 125, speed: 32, damage: 22, size: 27, color: "#7c8884", drop: ["iron", "stone", "crystal"], xp: 35 }
+    golem: { name: "Ironhide Golem", hp: 125, speed: 32, damage: 22, size: 27, color: "#7c8884", drop: ["iron", "stone", "crystal"], xp: 35 },
+    wraith: { name: "Ash Wraith", hp: 91, speed: 55, damage: 19, size: 21, color: "#74b3b8", drop: ["void", "bone", "ember"], xp: 30 },
+    charger: { name: "Crag Hornbeast", hp: 154, speed: 43, damage: 25, size: 29, color: "#b36a4a", drop: ["hide", "iron", "ember"], xp: 40 },
+    mimic: { name: "Crystal Mimic", hp: 108, speed: 64, damage: 21, size: 23, color: "#55cbd4", drop: ["crystal", "iron", "void"], xp: 36 }
   };
+
+  const BOSSES = [
+    { id: "dreadroot", name: "DREADROOT COLOSSUS", short: "DREADROOT", biome: "Mosswood Basin", hp: 760, radius: 48, speed: 43, color: "#a86cd2", projectile: "#bb74dc", summons: ["spider", "shroom", "eye"], special: ["VOID BLOOM", "ROOTS AWAKEN"], reward: ["wood", "fiber", "void"] },
+    { id: "cindermaw", name: "CINDERMAW FORGE TYRANT", short: "CINDERMAW", biome: "Cinderfall Crags", hp: 1080, radius: 52, speed: 51, color: "#ff7048", projectile: "#ff8156", summons: ["ember", "golem", "charger"], special: ["MAGMA CROWN", "FIRESTORM"] , reward: ["ember", "iron", "crystal"] },
+    { id: "voidqueen", name: "NYXARA, QUEEN OF THE VOID", short: "NYXARA", biome: "Starless Expanse", hp: 1420, radius: 54, speed: 58, color: "#d889ff", projectile: "#e5a0ff", summons: ["wraith", "mimic", "eye"], special: ["STARFALL", "ENDLESS NIGHT"], reward: ["void", "crystal", "ember"] }
+  ];
+  const BOSS_TARGETS = [10, 25, 43];
+  const BIOMES = [
+    { name: "Mosswood Basin", core: "#1d422c", mid: "#10291c", edge: "#07150e", accent: "#7fd06f", haze: "rgba(93,178,97,.09)" },
+    { name: "Cinderfall Crags", core: "#4a2b20", mid: "#291813", edge: "#120b0a", accent: "#ef7146", haze: "rgba(255,104,58,.09)" },
+    { name: "Starless Expanse", core: "#292242", mid: "#17152b", edge: "#090813", accent: "#b478e6", haze: "rgba(160,90,232,.1)" }
+  ];
 
   let W = 1200;
   let H = 700;
@@ -67,6 +87,7 @@
   let audioContext = null;
   let selectedPlayer = 0;
   let recipeFilter = "all";
+  let gameMode = 1;
 
   const keys = Object.create(null);
   const state = {
@@ -81,6 +102,9 @@
     portalPulse: 0,
     bossActive: false,
     bossDefeated: false,
+    bossStage: 0,
+    bossesDefeated: 0,
+    intermission: 0,
     shake: 0,
     flash: 0,
     damageBoost: 0,
@@ -108,7 +132,7 @@
       name: index ? "ROOK" : "NOVA",
       color: index ? "#64ccff" : "#f2bd45",
       dark: index ? "#2b74a0" : "#9b6c22",
-      x: W * .5 + (index ? 32 : -32),
+      x: W * .5 + (gameMode === 1 ? 0 : index ? 32 : -32),
       y: H * .62,
       radius: 16,
       facing: index ? 0 : Math.PI,
@@ -140,11 +164,15 @@
     state.portalOpen = false;
     state.bossActive = false;
     state.bossDefeated = false;
+    state.bossStage = 0;
+    state.bossesDefeated = 0;
+    state.intermission = 0;
     state.shake = 0;
     state.flash = 0;
     state.damageBoost = 0;
     state.craftedWeapons = new Set(["wooden"]);
-    state.players = [createPlayer(0), createPlayer(1)];
+    selectedPlayer = 0;
+    state.players = Array.from({ length: gameMode }, (_, index) => createPlayer(index));
     state.enemies = [];
     state.resources = [];
     state.projectiles = [];
@@ -154,7 +182,9 @@
     state.boss = null;
     state.portal = { x: W * .5, y: H * .27, radius: 43 };
     resetInventory();
+    createDecor();
     spawnInitialResources();
+    syncModeUI();
     updateAllUI();
   }
 
@@ -178,8 +208,8 @@
   }
 
   function createDecor() {
-    state.decor = Array.from({ length: 90 }, (_, i) => ({
-      x: Math.random(), y: Math.random(), r: random(2, 13), kind: i % 7, a: random(.04, .14)
+    state.decor = Array.from({ length: 130 }, (_, i) => ({
+      x: Math.random(), y: Math.random(), r: random(2, 18), kind: i % 11, a: random(.04, .16), phase: random(0, Math.PI * 2)
     }));
   }
 
@@ -211,18 +241,43 @@
     const edge = Math.floor(Math.random() * 4);
     const margin = 34;
     const point = edge === 0 ? { x: random(0, W), y: margin } : edge === 1 ? { x: W - margin, y: random(70, H) } : edge === 2 ? { x: random(0, W), y: H - margin } : { x: margin, y: random(70, H) };
-    const scale = 1 + (state.wave - 1) * .13;
+    const modeScale = gameMode === 1 ? .82 : 1.04;
+    const scale = (1 + (state.wave - 1) * .13) * modeScale;
     return {
       type, ...point, radius: def.size, health: Math.round(def.hp * scale), maxHealth: Math.round(def.hp * scale),
-      speed: def.speed * (1 + (state.wave - 1) * .035), damage: def.damage * (1 + (state.wave - 1) * .09),
+      speed: def.speed * (1 + (state.wave - 1) * .035), damage: def.damage * (1 + (state.wave - 1) * .09) * (gameMode === 1 ? .78 : 1),
       attackCooldown: random(.2, 1), hit: 0, phase: random(0, 6.28), dead: false, burn: 0, burnTick: 0,
       elite: state.wave >= 3 && Math.random() < .12
     };
   }
 
   function chooseMonster() {
-    const pool = state.wave === 1 ? ["slime", "slime", "wolf"] : state.wave === 2 ? ["slime", "wolf", "skeleton", "skeleton"] : state.wave === 3 ? ["wolf", "skeleton", "ember", "golem"] : ["skeleton", "ember", "eye", "golem"];
+    const realm = state.bossStage;
+    const pools = realm === 0
+      ? [["slime", "slime", "shroom", "wolf"], ["slime", "spider", "wolf", "shroom", "skeleton"], ["spider", "wolf", "skeleton", "eye"]]
+      : realm === 1
+        ? [["ember", "skeleton", "spider", "golem"], ["ember", "wraith", "golem", "charger"], ["ember", "golem", "charger", "mimic"]]
+        : [["eye", "wraith", "mimic", "skeleton"], ["wraith", "mimic", "charger", "eye"], ["wraith", "mimic", "charger", "golem", "eye"]];
+    const pool = pools[Math.min(2, Math.max(0, state.wave - 1))];
     return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function setMode(mode) {
+    gameMode = mode === 2 ? 2 : 1;
+    selectedPlayer = 0;
+    $$("#modeSelect button").forEach((button) => button.classList.toggle("active", Number(button.dataset.mode) === gameMode));
+    $("#p2Controls").style.display = gameMode === 2 ? "flex" : "none";
+    $("#startButton span").textContent = gameMode === 2 ? "BEGIN CO-OP RUN" : "BEGIN SOLO RUN";
+    syncModeUI();
+  }
+
+  function syncModeUI() {
+    $("#playersHud").classList.toggle("solo", gameMode === 1);
+    $("#modeStatus").textContent = gameMode === 2 ? "2 PLAYERS READY" : "SOLO HERO READY";
+    $("#worldMode").textContent = gameMode === 2 ? "COOPERATIVE WORLD" : "SOLO WORLD";
+    $("#craftShareCopy").textContent = gameMode === 2 ? "Resources are shared between both players" : "Forge resources collected in the wild";
+    const p2Equip = $('#equipTarget button[data-player="1"]');
+    if (p2Equip) p2Equip.style.display = gameMode === 2 ? "" : "none";
   }
 
   function startGame() {
@@ -269,18 +324,19 @@
     state.elapsed += dt;
     state.waveClock += dt;
     state.spawnClock -= dt;
+    state.intermission = Math.max(0, state.intermission - dt);
     state.damageBoost = Math.max(0, state.damageBoost - dt);
     state.shake = Math.max(0, state.shake - dt * 18);
     state.flash = Math.max(0, state.flash - dt * 3);
 
-    if (!state.bossActive) {
+    if (!state.bossActive && state.intermission <= 0) {
       if (state.waveClock > 28) {
         state.wave++;
         state.waveClock = 0;
         flashText(`WAVE ${String(state.wave).padStart(2, "0")}`, W / 2, H / 2, "#b9ef66", 28);
         sound("start");
       }
-      const maxEnemies = Math.min(5 + state.wave * 2, 13);
+      const maxEnemies = Math.min((gameMode === 1 ? 4 : 6) + state.wave * 2, gameMode === 1 ? 11 : 15);
       if (state.spawnClock <= 0 && state.enemies.length < maxEnemies && !state.portalOpen) {
         state.enemies.push(makeEnemy(chooseMonster()));
         state.spawnClock = Math.max(.72, 2.15 - state.wave * .18);
@@ -296,7 +352,7 @@
     updateRevives(dt);
     updateAllUI();
 
-    if (state.players.every((p) => p.down)) endGame(false);
+    if (state.players.length && state.players.every((p) => p.down)) endGame(false);
   }
 
   function updatePlayers(dt) {
@@ -384,11 +440,33 @@
     if (enemy.dead) return;
     enemy.dead = true;
     if (enemy.type === "boss") {
-      state.bossDefeated = true;
       state.bossActive = false;
-      burst(enemy.x, enemy.y, "#d6ff85", 70, 240);
+      state.bossesDefeated++;
+      const def = BOSSES.find((item) => item.id === enemy.bossId) || BOSSES[state.bossStage];
+      burst(enemy.x, enemy.y, def.color, 90, 270);
+      def.reward.forEach((material, index) => collectMaterial(material, 4 + state.bossStage * 2, enemy.x + (index - 1) * 24, enemy.y));
+      state.players.forEach((hero) => {
+        hero.health = hero.maxHealth;
+        hero.stamina = 100;
+      });
+      state.projectiles = [];
+      state.enemies = [];
       sound("win");
-      setTimeout(() => endGame(true), 900);
+      if (state.bossesDefeated >= BOSSES.length) {
+        state.bossDefeated = true;
+        setTimeout(() => endGame(true), 1100);
+      } else {
+        flashText(`${def.short} DEFEATED`, W / 2, H * .44, "#d6ff85", 24);
+        state.bossStage++;
+        state.boss = null;
+        state.intermission = 4;
+        state.wave++;
+        state.waveClock = 0;
+        createDecor();
+        setTimeout(() => {
+          if (running) flashText(`ENTERING ${BOSSES[state.bossStage].biome.toUpperCase()}`, W / 2, H * .48, BOSSES[state.bossStage].color, 19);
+        }, 900);
+      }
       return;
     }
     const def = MONSTERS[enemy.type];
@@ -400,7 +478,8 @@
       collectMaterial(type, enemy.elite ? 2 : 1, enemy.x + random(-8, 8), enemy.y + random(-8, 8));
     }
     burst(enemy.x, enemy.y, def.color, 13, 130);
-    if (state.kills >= 12 && !state.portalOpen) openPortal();
+    const target = BOSS_TARGETS[state.bossStage];
+    if (target && state.kills >= target && !state.portalOpen && !state.bossActive) openPortal();
   }
 
   function addXp(player, amount) {
@@ -443,21 +522,23 @@
     const angle = Math.atan2(target.y - enemy.y, target.x - enemy.x);
     const d = distance(enemy, target);
 
-    if (enemy.type === "eye" && d < 310 && enemy.attackCooldown <= 0) {
-      enemy.attackCooldown = 2.1;
-      state.projectiles.push({ owner: "enemy", x: enemy.x, y: enemy.y, vx: Math.cos(angle) * 190, vy: Math.sin(angle) * 190, life: 2.2, radius: 6, damage: enemy.damage, color: "#b57af0" });
+    if (["eye", "wraith", "shroom"].includes(enemy.type) && d < 330 && enemy.attackCooldown <= 0) {
+      enemy.attackCooldown = enemy.type === "shroom" ? 2.45 : 2.05;
+      const projectileColor = enemy.type === "shroom" ? "#e59bd8" : enemy.type === "wraith" ? "#79d8df" : "#b57af0";
+      state.projectiles.push({ owner: "enemy", x: enemy.x, y: enemy.y, vx: Math.cos(angle) * 205, vy: Math.sin(angle) * 205, life: 2.2, radius: 6, damage: enemy.damage, color: projectileColor });
       return;
     }
     if (d > enemy.radius + target.radius + 8) {
       enemy.x += Math.cos(angle) * enemy.speed * dt;
       enemy.y += Math.sin(angle) * enemy.speed * dt;
     } else if (enemy.attackCooldown <= 0) {
-      enemy.attackCooldown = enemy.type === "golem" ? 1.5 : .9;
+      enemy.attackCooldown = ["golem", "charger"].includes(enemy.type) ? 1.5 : .9;
       hurtPlayer(target, enemy.damage);
     }
   }
 
   function updateBoss(boss, dt) {
+    const def = BOSSES.find((item) => item.id === boss.bossId) || BOSSES[0];
     boss.hit = Math.max(0, boss.hit - dt);
     boss.attackCooldown -= dt;
     boss.specialCooldown -= dt;
@@ -470,34 +551,44 @@
     const rage = boss.health < boss.maxHealth * .45;
 
     if (boss.specialCooldown <= 0) {
-      boss.specialCooldown = rage ? 2.6 : 4;
+      boss.specialCooldown = rage ? 2.35 : 3.8;
       boss.specialType = (boss.specialType + 1) % 2;
       if (boss.specialType === 0) {
-        for (let i = 0; i < (rage ? 14 : 10); i++) {
-          const a = i / (rage ? 14 : 10) * Math.PI * 2 + boss.phase;
-          state.projectiles.push({ owner: "enemy", x: boss.x, y: boss.y, vx: Math.cos(a) * (rage ? 235 : 190), vy: Math.sin(a) * (rage ? 235 : 190), life: 3, radius: 7, damage: rage ? 18 : 14, color: "#bb74dc" });
+        const shots = (rage ? 14 : 10) + state.bossStage * 2;
+        for (let i = 0; i < shots; i++) {
+          const spiral = boss.bossId === "voidqueen" ? boss.phase * .8 : 0;
+          const a = i / shots * Math.PI * 2 + spiral;
+          state.projectiles.push({ owner: "enemy", x: boss.x, y: boss.y, vx: Math.cos(a) * (rage ? 245 : 195), vy: Math.sin(a) * (rage ? 245 : 195), life: 3, radius: boss.bossId === "cindermaw" ? 9 : 7, damage: (rage ? 18 : 14) + state.bossStage * 3, color: def.projectile });
         }
-        flashText("VOID BLOOM", boss.x, boss.y - 65, "#d49af1", 12);
+        flashText(def.special[0], boss.x, boss.y - boss.radius - 18, def.color, 12);
         state.shake = 6;
       } else {
-        const count = rage ? 3 : 2;
-        for (let i = 0; i < count; i++) {
-          const add = makeEnemy(Math.random() < .5 ? "eye" : "ember");
-          add.x = boss.x + random(-65, 65);
-          add.y = boss.y + random(-65, 65);
-          state.enemies.push(add);
+        if (boss.bossId === "cindermaw") {
+          for (let i = 0; i < (rage ? 8 : 6); i++) {
+            const targetX = random(40, W - 40);
+            state.projectiles.push({ owner: "enemy", x: targetX, y: 48, vx: random(-25, 25), vy: random(200, 270), life: Math.max(1, (H - 48) / 220), radius: 10, damage: rage ? 22 : 17, color: def.projectile });
+          }
+        } else {
+          const count = rage ? 3 : 2;
+          for (let i = 0; i < count; i++) {
+            const type = def.summons[Math.floor(Math.random() * def.summons.length)];
+            const add = makeEnemy(type);
+            add.x = boss.x + random(-70, 70);
+            add.y = boss.y + random(-70, 70);
+            state.enemies.push(add);
+          }
         }
-        flashText("ROOTS AWAKEN", boss.x, boss.y - 65, "#ff9c6f", 12);
+        flashText(def.special[1], boss.x, boss.y - boss.radius - 18, def.color, 12);
       }
       sound("boss");
     }
 
     if (d > boss.radius + target.radius + 14) {
-      boss.x += Math.cos(angle) * (rage ? 60 : 43) * dt;
-      boss.y += Math.sin(angle) * (rage ? 60 : 43) * dt;
+      boss.x += Math.cos(angle) * def.speed * (rage ? 1.38 : 1) * dt;
+      boss.y += Math.sin(angle) * def.speed * (rage ? 1.38 : 1) * dt;
     } else if (boss.attackCooldown <= 0) {
       boss.attackCooldown = rage ? .8 : 1.15;
-      hurtPlayer(target, rage ? 24 : 19);
+      hurtPlayer(target, (rage ? 24 : 19) + state.bossStage * 3);
       state.shake = 8;
     }
   }
@@ -519,6 +610,7 @@
   }
 
   function updateRevives(dt) {
+    if (state.players.length < 2) return;
     state.players.forEach((player) => {
       if (!player.down) return;
       const ally = state.players[1 - player.index];
@@ -608,10 +700,11 @@
   }
 
   function openPortal() {
+    const def = BOSSES[state.bossStage];
     state.portalOpen = true;
     state.enemies.forEach((enemy) => { enemy.dead = true; });
-    flashText("THE RIFT IS OPEN", W / 2, H / 2 - 40, "#ca8cff", 24);
-    burst(state.portal.x, state.portal.y, "#b36fea", 35, 190);
+    flashText(`${def.short}'S RIFT IS OPEN`, W / 2, H / 2 - 40, def.color, 24);
+    burst(state.portal.x, state.portal.y, def.color, 42, 205);
     sound("boss");
   }
 
@@ -627,18 +720,20 @@
   }
 
   function startBoss() {
+    const def = BOSSES[state.bossStage];
+    const hpScale = gameMode === 1 ? .72 : 1;
     state.bossActive = true;
     state.portalOpen = false;
     state.enemies = [];
     state.boss = {
-      type: "boss", x: state.portal.x, y: state.portal.y, radius: 48,
-      health: 900, maxHealth: 900, hit: 0, attackCooldown: 1.4,
+      type: "boss", bossId: def.id, x: state.portal.x, y: state.portal.y, radius: def.radius,
+      health: Math.round(def.hp * hpScale), maxHealth: Math.round(def.hp * hpScale), hit: 0, attackCooldown: 1.4,
       specialCooldown: 2.5, specialType: -1, phase: 0, dead: false
     };
     state.shake = 12;
     state.flash = .6;
     sound("boss");
-    flashText("DREADROOT AWAKENS", W / 2, H * .46, "#ff8b68", 25);
+    flashText(`${def.short} AWAKENS`, W / 2, H * .46, def.color, 25);
   }
 
   function updateEffects(dt) {
@@ -708,14 +803,26 @@
   }
 
   function drawWorld() {
+    const biome = BIOMES[Math.min(state.bossStage, BIOMES.length - 1)];
     const gradient = ctx.createRadialGradient(W * .5, H * .45, 30, W * .5, H * .45, Math.max(W, H) * .8);
-    gradient.addColorStop(0, "#183324");
-    gradient.addColorStop(.55, "#10251a");
-    gradient.addColorStop(1, "#09170f");
+    gradient.addColorStop(0, biome.core);
+    gradient.addColorStop(.55, biome.mid);
+    gradient.addColorStop(1, biome.edge);
     ctx.fillStyle = gradient;
     ctx.fillRect(-12, -12, W + 24, H + 24);
 
-    ctx.strokeStyle = "rgba(189,225,173,.024)";
+    const path = ctx.createLinearGradient(0, H, W, 0);
+    path.addColorStop(0, "rgba(212,236,197,.025)");
+    path.addColorStop(.5, biome.haze);
+    path.addColorStop(1, "rgba(212,236,197,.018)");
+    ctx.strokeStyle = path;
+    ctx.lineWidth = 90;
+    ctx.beginPath();
+    ctx.moveTo(-60, H * .78);
+    ctx.bezierCurveTo(W * .22, H * .56, W * .65, H * .72, W + 60, H * .3);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(220,240,211,.026)";
     ctx.lineWidth = 1;
     const grid = 42;
     for (let x = 0; x < W; x += grid) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
@@ -724,18 +831,42 @@
     state.decor.forEach((decor) => {
       const x = decor.x * W;
       const y = 55 + decor.y * (H - 55);
-      ctx.fillStyle = `rgba(125, 181, 103, ${decor.a})`;
-      if (decor.kind < 3) {
+      if (decor.kind < 2) {
+        const patch = ctx.createRadialGradient(x, y, 0, x, y, decor.r * 4.5);
+        patch.addColorStop(0, biome.haze);
+        patch.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = patch;
+        ctx.fillRect(x - decor.r * 5, y - decor.r * 5, decor.r * 10, decor.r * 10);
+      } else if (decor.kind < 5) {
+        ctx.fillStyle = hexAlpha(biome.accent, decor.a);
         ctx.beginPath();
         ctx.ellipse(x, y, decor.r * 1.8, decor.r * .55, decor.kind, 0, Math.PI * 2);
         ctx.fill();
-      } else if (decor.kind === 3) {
-        ctx.strokeStyle = `rgba(150, 195, 124, ${decor.a})`;
+      } else if (decor.kind === 5) {
+        ctx.strokeStyle = hexAlpha(biome.accent, decor.a);
         ctx.beginPath(); ctx.arc(x, y, decor.r, 0, Math.PI * 1.4); ctx.stroke();
+      } else if (decor.kind < 9) {
+        ctx.fillStyle = "rgba(3,8,5,.25)";
+        ctx.beginPath();
+        ctx.moveTo(x, y - decor.r); ctx.lineTo(x + decor.r * .8, y); ctx.lineTo(x, y + decor.r * .45); ctx.lineTo(x - decor.r * .8, y); ctx.closePath(); ctx.fill();
       } else {
-        ctx.fillRect(x, y, 2, 2);
+        const glow = .25 + Math.sin(state.elapsed * 2 + decor.phase) * .18;
+        ctx.fillStyle = hexAlpha(biome.accent, glow);
+        ctx.shadowColor = biome.accent; ctx.shadowBlur = 8;
+        ctx.fillRect(x, y + Math.sin(state.elapsed + decor.phase) * 5, 2, 2);
+        ctx.shadowBlur = 0;
       }
     });
+
+    ctx.save();
+    ctx.translate(state.portal.x, state.portal.y + 7);
+    ctx.strokeStyle = hexAlpha(biome.accent, .1);
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(0, 0, 70, 26, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([4, 10]);
+    ctx.beginPath(); ctx.ellipse(0, 0, 54, 19, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
 
     const vignette = ctx.createRadialGradient(W / 2, H / 2, H * .2, W / 2, H / 2, Math.max(W, H) * .68);
     vignette.addColorStop(.55, "rgba(0,0,0,0)");
@@ -745,7 +876,10 @@
   }
 
   function shadow(x, y, rx, ry, alpha = .3) {
-    ctx.fillStyle = `rgba(0,0,0,${alpha})`;
+    const shade = ctx.createRadialGradient(x, y + 8, 0, x, y + 8, rx);
+    shade.addColorStop(0, `rgba(0,0,0,${alpha})`);
+    shade.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = shade;
     ctx.beginPath(); ctx.ellipse(x, y + 8, rx, ry, 0, 0, Math.PI * 2); ctx.fill();
   }
 
@@ -753,6 +887,9 @@
     ctx.save();
     ctx.translate(player.x, player.y);
     if (player.invuln > 0 && Math.floor(player.invuln * 14) % 2) ctx.globalAlpha = .45;
+    ctx.strokeStyle = hexAlpha(player.color, .18 + Math.sin(state.elapsed * 3 + player.index) * .05);
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.ellipse(0, 9, 24, 10, 0, 0, Math.PI * 2); ctx.stroke();
     shadow(0, 0, 18, 7);
     if (player.down) {
       ctx.rotate(Math.PI / 2);
@@ -760,10 +897,18 @@
     }
     const bob = player.down ? 0 : Math.sin(player.step) * (player.moving ? 2 : .6);
     ctx.translate(0, bob);
-    ctx.fillStyle = player.dark;
+    const bodyGradient = ctx.createLinearGradient(-12, -4, 12, 18);
+    bodyGradient.addColorStop(0, player.dark);
+    bodyGradient.addColorStop(1, "#17241d");
+    ctx.fillStyle = bodyGradient;
     ctx.fillRect(-12, -1, 24, 19);
-    ctx.fillStyle = player.color;
+    const headGradient = ctx.createLinearGradient(-14, -16, 14, 3);
+    headGradient.addColorStop(0, "#fff0ad");
+    headGradient.addColorStop(.25, player.color);
+    headGradient.addColorStop(1, player.dark);
+    ctx.fillStyle = headGradient;
     ctx.fillRect(-14, -16, 28, 19);
+    ctx.strokeStyle = "rgba(0,0,0,.28)"; ctx.lineWidth = 1; ctx.strokeRect(-14, -16, 28, 19);
     ctx.fillStyle = "rgba(255,255,255,.18)";
     ctx.fillRect(-11, -13, 22, 5);
     ctx.fillStyle = "#142017";
@@ -773,10 +918,13 @@
     ctx.strokeStyle = WEAPONS[player.weapon].color;
     ctx.lineWidth = 4;
     ctx.lineCap = "round";
+    ctx.shadowColor = WEAPONS[player.weapon].color;
+    ctx.shadowBlur = player.weapon === "wooden" ? 0 : 8;
     ctx.beginPath();
     ctx.moveTo(Math.cos(player.facing) * 12, Math.sin(player.facing) * 7);
     ctx.lineTo(Math.cos(player.facing) * 24, Math.sin(player.facing) * 17);
     ctx.stroke();
+    ctx.shadowBlur = 0;
     ctx.fillStyle = player.color;
     ctx.font = "800 8px DM Mono, monospace";
     ctx.textAlign = "center";
@@ -802,6 +950,14 @@
     if (enemy.type === "slime") {
       ctx.beginPath(); ctx.roundRect(-18, -13, 36, 27, [15, 15, 5, 5]); ctx.fill();
       ctx.fillStyle = "rgba(255,255,255,.16)"; ctx.fillRect(-10, -9, 10, 5);
+    } else if (enemy.type === "shroom") {
+      ctx.fillStyle = enemy.hit > 0 ? "#fff" : "#72566e"; ctx.fillRect(-7,-3,14,20);
+      ctx.fillStyle = enemy.hit > 0 ? "#fff" : def.color; ctx.beginPath();ctx.moveTo(-23,-3);ctx.quadraticCurveTo(-17,-27,0,-28);ctx.quadraticCurveTo(18,-27,23,-3);ctx.closePath();ctx.fill();
+      ctx.fillStyle="rgba(255,255,255,.25)";ctx.fillRect(-11,-20,7,5);ctx.fillRect(7,-15,5,4);
+    } else if (enemy.type === "spider") {
+      ctx.strokeStyle=enemy.hit>0?"#fff":def.color;ctx.lineWidth=3;
+      for(let i=-1;i<=1;i+=2){for(let j=0;j<3;j++){ctx.beginPath();ctx.moveTo(i*8,j*5-5);ctx.lineTo(i*(18+j*2),j*7-10);ctx.lineTo(i*(24+j*2),j*9-4);ctx.stroke();}}
+      ctx.fillStyle=enemy.hit>0?"#fff":def.color;ctx.beginPath();ctx.arc(0,0,13,0,Math.PI*2);ctx.fill();
     } else if (enemy.type === "wolf") {
       ctx.beginPath(); ctx.moveTo(-18,-11);ctx.lineTo(-12,-25);ctx.lineTo(-4,-15);ctx.lineTo(12,-18);ctx.lineTo(18,11);ctx.lineTo(-16,12);ctx.closePath();ctx.fill();
     } else if (enemy.type === "skeleton") {
@@ -811,10 +967,17 @@
       ctx.fillStyle="#ffce69";ctx.fillRect(-7,-4,5,5);ctx.fillRect(3,-4,5,5);
     } else if (enemy.type === "eye") {
       ctx.rotate(enemy.phase * .2);ctx.fillRect(-16,-16,32,32);ctx.rotate(-enemy.phase*.2);ctx.fillStyle="#f0d6ff";ctx.beginPath();ctx.ellipse(0,0,10,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="#421e68";ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.fill();
+    } else if (enemy.type === "wraith") {
+      ctx.shadowColor=def.color;ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(0,-24);ctx.quadraticCurveTo(22,-16,17,3);ctx.lineTo(11,20);ctx.lineTo(2,13);ctx.lineTo(-8,22);ctx.lineTo(-17,7);ctx.quadraticCurveTo(-23,-15,0,-24);ctx.fill();ctx.shadowBlur=0;
+      ctx.fillStyle="#d4fbff";ctx.fillRect(-9,-7,5,4);ctx.fillRect(5,-7,5,4);
+    } else if (enemy.type === "charger") {
+      ctx.fillRect(-26,-17,52,35);ctx.fillStyle="#7e4535";ctx.fillRect(-18,-25,36,16);ctx.strokeStyle="#e3c799";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-14,-21);ctx.lineTo(-27,-33);ctx.moveTo(14,-21);ctx.lineTo(27,-33);ctx.stroke();ctx.fillStyle="#ffd36a";ctx.fillRect(-10,-12,6,5);ctx.fillRect(5,-12,6,5);
+    } else if (enemy.type === "mimic") {
+      ctx.shadowColor=def.color;ctx.shadowBlur=10;ctx.fillRect(-22,-16,44,33);ctx.fillStyle="#17383d";ctx.fillRect(-19,-5,38,7);ctx.fillStyle="#d8feff";ctx.fillRect(-12,-2,5,4);ctx.fillRect(7,-2,5,4);ctx.fillStyle="#72eff3";ctx.beginPath();ctx.moveTo(-10,-16);ctx.lineTo(-4,-30);ctx.lineTo(2,-16);ctx.moveTo(6,-16);ctx.lineTo(13,-27);ctx.lineTo(16,-16);ctx.fill();ctx.shadowBlur=0;
     } else {
       ctx.fillRect(-23,-18,46,35);ctx.fillStyle="#a0aba4";ctx.fillRect(-16,-22,14,7);ctx.fillRect(7,-19,11,6);ctx.fillStyle="#e7a958";ctx.fillRect(-9,-5,5,4);ctx.fillRect(5,-5,5,4);
     }
-    if (!["skeleton","ember","golem"].includes(enemy.type)) {
+    if (["slime","shroom","spider","wolf"].includes(enemy.type)) {
       ctx.fillStyle = "#102017";
       ctx.fillRect(-8, -3, 4, 4); ctx.fillRect(5, -3, 4, 4);
     }
@@ -826,29 +989,40 @@
   }
 
   function drawBoss(boss) {
+    const def = BOSSES.find((item) => item.id === boss.bossId) || BOSSES[0];
     ctx.save();
     ctx.translate(boss.x, boss.y);
-    shadow(0, 0, 55, 17, .45);
+    ctx.strokeStyle = hexAlpha(def.color, .2 + Math.sin(boss.phase * 3) * .06);
+    ctx.lineWidth = 3;
+    ctx.beginPath();ctx.ellipse(0,18,boss.radius+18,22,0,0,Math.PI*2);ctx.stroke();
+    shadow(0, 0, boss.radius + 8, 18, .52);
     const bob = Math.sin(boss.phase * 1.7) * 3;
     ctx.translate(0, bob);
     ctx.rotate(Math.sin(boss.phase * .35) * .04);
-    ctx.fillStyle = boss.hit > 0 ? "#fff" : "#382c3c";
-    ctx.fillRect(-40, -33, 80, 66);
-    ctx.fillStyle = boss.hit > 0 ? "#fff" : "#654257";
-    ctx.fillRect(-50, -16, 18, 48); ctx.fillRect(32, -16, 18, 48);
-    ctx.fillStyle = "#222720";
-    ctx.fillRect(-31, 25, 24, 26); ctx.fillRect(7, 25, 24, 26);
-    ctx.strokeStyle = "#a76ad2";
-    ctx.lineWidth = 3;
-    for (let i = -1; i <= 1; i++) {
-      ctx.beginPath(); ctx.moveTo(i * 21, -31); ctx.lineTo(i * 28, -53); ctx.lineTo(i * 36 + 4, -61); ctx.stroke();
+    ctx.shadowColor = def.color; ctx.shadowBlur = 16;
+    if (boss.bossId === "cindermaw") {
+      ctx.fillStyle = boss.hit > 0 ? "#fff" : "#44251d";ctx.fillRect(-44,-36,88,71);
+      ctx.fillStyle = boss.hit > 0 ? "#fff" : "#8c4028";ctx.fillRect(-55,-19,18,52);ctx.fillRect(37,-19,18,52);
+      ctx.fillStyle="#1f1512";ctx.fillRect(-32,26,25,30);ctx.fillRect(7,26,25,30);
+      ctx.fillStyle="#ff7a43";ctx.fillRect(-28,-18,56,31);ctx.fillStyle="#ffd06a";ctx.fillRect(-17,-10,12,8);ctx.fillRect(6,-10,12,8);
+      ctx.fillStyle="#2a1712";ctx.fillRect(-9,2,18,6);
+      ctx.strokeStyle="#ffb154";ctx.lineWidth=5;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(i*19,-35);ctx.lineTo(i*25,-54);ctx.lineTo(i*32+4,-64);ctx.stroke();}
+    } else if (boss.bossId === "voidqueen") {
+      ctx.rotate(Math.sin(boss.phase)*.04);
+      ctx.fillStyle=boss.hit>0?"#fff":"#241b39";ctx.beginPath();ctx.moveTo(0,-55);ctx.lineTo(38,-28);ctx.lineTo(46,25);ctx.lineTo(18,48);ctx.lineTo(0,34);ctx.lineTo(-18,48);ctx.lineTo(-46,25);ctx.lineTo(-38,-28);ctx.closePath();ctx.fill();
+      ctx.fillStyle=boss.hit>0?"#fff":"#6b3b82";ctx.fillRect(-28,-31,56,44);
+      ctx.strokeStyle="#dda1ff";ctx.lineWidth=4;for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(i*12,-48+Math.abs(i)*4);ctx.lineTo(i*17,-70+Math.abs(i)*5);ctx.stroke();}
+      ctx.fillStyle="#f0c2ff";ctx.fillRect(-19,-17,12,8);ctx.fillRect(7,-17,12,8);ctx.fillStyle="#a54cce";ctx.fillRect(-6,1,12,18);
+      for(let i=0;i<4;i++){const a=boss.phase*.5+i*Math.PI/2;ctx.fillStyle="#c986f0";ctx.fillRect(Math.cos(a)*59-4,Math.sin(a)*24-4,8,8);}
+    } else {
+      ctx.fillStyle = boss.hit > 0 ? "#fff" : "#2d392b";ctx.fillRect(-40,-33,80,66);
+      ctx.fillStyle = boss.hit > 0 ? "#fff" : "#526547";ctx.fillRect(-50,-16,18,48);ctx.fillRect(32,-16,18,48);
+      ctx.fillStyle="#1b271d";ctx.fillRect(-31,25,24,26);ctx.fillRect(7,25,24,26);
+      ctx.strokeStyle="#8fbc69";ctx.lineWidth=5;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(i*21,-31);ctx.lineTo(i*28,-53);ctx.lineTo(i*36+4,-61);ctx.stroke();}
+      ctx.fillStyle="#c7ff83";ctx.fillRect(-19,-11,11,8);ctx.fillRect(8,-11,11,8);ctx.fillStyle="#794e86";ctx.fillRect(-5,3,10,15);
     }
-    ctx.fillStyle = "#e08bff";
-    ctx.shadowColor = "#c86bff"; ctx.shadowBlur = 16;
-    ctx.fillRect(-19, -11, 11, 8); ctx.fillRect(8, -11, 11, 8);
     ctx.shadowBlur = 0;
-    ctx.fillStyle = "#9c6ac0";
-    ctx.fillRect(-5, 3, 10, 15);
+    ctx.strokeStyle="rgba(255,255,255,.09)";ctx.lineWidth=1;ctx.strokeRect(-boss.radius*.72,-boss.radius*.65,boss.radius*1.44,boss.radius*1.25);
     ctx.restore();
   }
 
@@ -891,12 +1065,13 @@
 
   function drawPortal() {
     const portal = state.portal;
+    const color = BOSSES[state.bossStage]?.color || "#b977e9";
     const pulse = Math.sin(state.portalPulse * 4) * 5;
     ctx.save();ctx.translate(portal.x,portal.y);
-    ctx.strokeStyle="rgba(186,112,236,.16)";ctx.lineWidth=14;ctx.beginPath();ctx.ellipse(0,8,portal.radius+10+pulse,22+pulse*.3,0,0,Math.PI*2);ctx.stroke();
-    ctx.strokeStyle="#b977e9";ctx.lineWidth=3;ctx.shadowColor="#bc6ff1";ctx.shadowBlur=22;ctx.beginPath();ctx.ellipse(0,6,portal.radius+pulse,17+pulse*.2,0,0,Math.PI*2);ctx.stroke();
-    ctx.fillStyle="rgba(119,53,165,.34)";ctx.beginPath();ctx.ellipse(0,6,portal.radius-4,13,0,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-    for(let i=0;i<7;i++){const a=state.portalPulse*(.5+i*.07)+i;const r=portal.radius+12;ctx.fillStyle=`rgba(205,145,250,${.25+i*.04})`;ctx.fillRect(Math.cos(a)*r-2,Math.sin(a)*16+3,4,4);}
+    ctx.strokeStyle=hexAlpha(color,.18);ctx.lineWidth=14;ctx.beginPath();ctx.ellipse(0,8,portal.radius+10+pulse,22+pulse*.3,0,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.shadowColor=color;ctx.shadowBlur=25;ctx.beginPath();ctx.ellipse(0,6,portal.radius+pulse,17+pulse*.2,0,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle=hexAlpha(color,.3);ctx.beginPath();ctx.ellipse(0,6,portal.radius-4,13,0,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    for(let i=0;i<9;i++){const a=state.portalPulse*(.5+i*.07)+i;const r=portal.radius+12;ctx.fillStyle=hexAlpha(color,.25+i*.035);ctx.fillRect(Math.cos(a)*r-2,Math.sin(a)*16+3,4,4);}
     ctx.restore();
   }
 
@@ -957,26 +1132,38 @@
     const day = Math.floor(state.elapsed / 80) + 1;
     const cycle = ["DAWN", "DAY", "DUSK", "NIGHT"][Math.floor(state.elapsed / 20) % 4];
     $("#dayLabel").textContent = `DAY ${day} · ${cycle}`;
+    $("#biomeLabel").textContent = BIOMES[state.bossStage]?.name || BIOMES[0].name;
 
     if (state.bossActive && state.boss) {
+      const bossDef = BOSSES.find((item) => item.id === state.boss.bossId) || BOSSES[state.bossStage];
       $("#bossHud").classList.remove("hidden");
       $("#bossHealth").style.width = `${clamp(state.boss.health / state.boss.maxHealth, 0, 1) * 100}%`;
-      $("#questTitle").textContent = "Defeat the Dreadroot";
-      $("#questCopy").textContent = "Break its guard and survive the void blooms.";
+      $("#bossName").textContent = bossDef.name;
+      $("#bossChapter").textContent = `WORLD BOSS · ${state.bossStage + 1} / ${BOSSES.length}`;
+      $("#questTitle").textContent = `Defeat ${bossDef.short}`;
+      $("#questCopy").textContent = `Survive ${bossDef.special[0].toLowerCase()} and bring the titan down.`;
       $("#questCount").textContent = `${Math.ceil(state.boss.health)} health remains`;
       $("#questProgress").style.width = `${(1 - state.boss.health / state.boss.maxHealth) * 100}%`;
     } else {
       $("#bossHud").classList.add("hidden");
       if (state.portalOpen) {
-        $("#questTitle").textContent = "Enter the wild rift";
-        $("#questCopy").textContent = "The seal is broken. Approach the glowing portal.";
-        $("#questCount").textContent = "BOSS GATE OPEN";
+        $("#questTitle").textContent = `Face ${BOSSES[state.bossStage].short}`;
+        $("#questCopy").textContent = "The seal is broken. Approach the glowing rift.";
+        $("#questCount").textContent = `BOSS ${state.bossStage + 1} OF ${BOSSES.length} READY`;
         $("#questProgress").style.width = "100%";
+      } else if (state.intermission > 0) {
+        $("#questTitle").textContent = "Realm purified";
+        $("#questCopy").textContent = "Gather your rewards. A darker realm is forming.";
+        $("#questCount").textContent = `${state.bossesDefeated} / ${BOSSES.length} BOSSES DEFEATED`;
+        $("#questProgress").style.width = `${state.bossesDefeated / BOSSES.length * 100}%`;
       } else {
-        $("#questTitle").textContent = "Break the wild seal";
-        $("#questCopy").textContent = "Defeat monsters to charge the ancient gate.";
-        $("#questCount").textContent = `${Math.min(state.kills, 12)} / 12 defeated`;
-        $("#questProgress").style.width = `${Math.min(100, state.kills / 12 * 100)}%`;
+        const segmentStart = state.bossStage ? BOSS_TARGETS[state.bossStage - 1] : 0;
+        const segmentTotal = BOSS_TARGETS[state.bossStage] - segmentStart;
+        const segmentKills = clamp(state.kills - segmentStart, 0, segmentTotal);
+        $("#questTitle").textContent = `Awaken ${BOSSES[state.bossStage].short}`;
+        $("#questCopy").textContent = "Defeat monsters to charge the realm's ancient gate.";
+        $("#questCount").textContent = `${segmentKills} / ${segmentTotal} defeated`;
+        $("#questProgress").style.width = `${Math.min(100, segmentKills / segmentTotal * 100)}%`;
       }
     }
     const threat = state.bossActive ? "BOSS THREAT" : state.wave >= 4 ? "SEVERE THREAT" : state.wave >= 2 ? "RISING THREAT" : "LOW THREAT";
@@ -1063,11 +1250,21 @@
     $("#endScreen").setAttribute("aria-hidden", "false");
     $("#endEyebrow").textContent = won ? "RIFT CONQUERED" : "THE WILDS ENDURE";
     $("#endTitle").textContent = won ? "The wilds remember." : "Your forge went cold.";
-    $("#endCopy").textContent = won ? "Together, you shattered the ancient corruption." : "Gather, forge, and return stronger together.";
+    $("#endCopy").textContent = won
+      ? gameMode === 2 ? "Together, you defeated all three rulers of the rifts." : "Alone, you defeated all three rulers of the rifts."
+      : gameMode === 2 ? "Gather, forge, and return stronger together." : "Gather, forge, and return stronger.";
     $("#endSigil").textContent = won ? "✦" : "×";
     $("#statMonsters").textContent = state.kills;
     $("#statMaterials").textContent = state.totalMaterials;
     $("#statCrafted").textContent = state.crafted;
+  }
+
+  function returnToMenu() {
+    running = false;
+    paused = true;
+    ["#endScreen", "#pauseScreen", "#craftScreen"].forEach((selector) => $(selector).classList.remove("active"));
+    $("#startScreen").classList.add("active");
+    $("#startScreen").setAttribute("aria-hidden", "false");
   }
 
   function frame(time) {
@@ -1098,7 +1295,12 @@
   window.addEventListener("resize", resize);
 
   $("#startButton").addEventListener("click", startGame);
+  $("#modeSelect").addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-mode]");
+    if (button) setMode(Number(button.dataset.mode));
+  });
   $("#restartButton").addEventListener("click", startGame);
+  $("#changeModeButton").addEventListener("click", returnToMenu);
   $("#restartFromPause").addEventListener("click", startGame);
   $("#craftButton").addEventListener("click", () => toggleCraft());
   $("#closeCraft").addEventListener("click", () => toggleCraft(false));
@@ -1133,10 +1335,11 @@
   });
 
   resetInventory();
-  state.players = [createPlayer(0), createPlayer(1)];
+  state.players = [createPlayer(0)];
   resize();
   spawnInitialResources();
   renderMaterials();
+  setMode(1);
   updateAllUI();
   requestAnimationFrame(frame);
 })();

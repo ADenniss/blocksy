@@ -40,11 +40,11 @@
           <h2 id="questTitle">Break the wild seal</h2>
           <p id="questCopy">Defeat monsters to charge the ancient gate.</p>
           <div class="progress-track"><span id="questProgress"></span></div>
-          <div class="progress-meta"><span id="questCount">0 / 12 defeated</span><b id="threatLabel">LOW THREAT</b></div>
+          <div class="progress-meta"><span id="questCount">0 / 10 defeated</span><b id="threatLabel">LOW THREAT</b></div>
         </aside>
 
         <div class="boss-hud hidden" id="bossHud">
-          <div class="boss-heading"><span>WORLD BOSS</span><b id="bossName">DREADROOT COLOSSUS</b></div>
+          <div class="boss-heading"><span id="bossChapter">WORLD BOSS · I / III</span><b id="bossName">DREADROOT COLOSSUS</b></div>
           <div class="boss-track"><span id="bossHealth"></span></div>
         </div>
 
@@ -58,7 +58,7 @@
 
         <div class="interaction-hint hidden" id="interactionHint"><kbd>STEP IN</kbd><span>ENTER THE RIFT</span></div>
 
-        <div class="players-hud">
+        <div class="players-hud" id="playersHud">
           <article class="player-card p1-card">
             <div class="player-gem p1">1</div>
             <div class="player-info">
@@ -86,16 +86,24 @@
           <div class="rune rune-a"></div><div class="rune rune-b"></div><div class="rune rune-c"></div>
         </div>
         <div class="start-content">
-          <div class="kicker">A TWO-PLAYER WILDERNESS ADVENTURE</div>
+          <div class="kicker">A WILDERNESS ADVENTURE · SOLO OR CO-OP</div>
           <h1>GATHER.<br><em>FORGE.</em> SURVIVE.</h1>
-          <p>Carve a path through the Mosswood, craft legendary weapons, and stand together against the thing sleeping beyond the rift.</p>
+          <p>Carve a path through three corrupted realms, forge legendary weapons, and bring down the monsters ruling beyond each rift.</p>
+          <div class="mode-select" id="modeSelect" aria-label="Choose game mode">
+            <button class="mode-card active" data-mode="1">
+              <span class="mode-icon">◆</span><span><b>SOLO</b><small>ONE HERO · BALANCED</small></span><i>1P</i>
+            </button>
+            <button class="mode-card" data-mode="2">
+              <span class="mode-icon duo">◆◆</span><span><b>CO-OP</b><small>LOCAL · SHARED FORGE</small></span><i>2P</i>
+            </button>
+          </div>
           <button class="primary-button" id="startButton"><span>ENTER THE WILDS</span><b>→</b></button>
           <div class="controls-preview">
             <div><span class="control-player p1">P1</span><kbd>WASD</kbd><small>MOVE</small><kbd>F</kbd><small>ATTACK</small><kbd>G</kbd><small>DASH</small></div>
-            <div><span class="control-player p2">P2</span><kbd>ARROWS</kbd><small>MOVE</small><kbd>K</kbd><small>ATTACK</small><kbd>L</kbd><small>DASH</small></div>
+            <div id="p2Controls"><span class="control-player p2">P2</span><kbd>ARROWS</kbd><small>MOVE</small><kbd>K</kbd><small>ATTACK</small><kbd>L</kbd><small>DASH</small></div>
           </div>
         </div>
-        <div class="build-tag">BUILD 1.0 · LOCAL CO-OP</div>
+        <div class="build-tag">BUILD 2.0 · THREE REALMS</div>
       </section>
 
       <section class="craft-screen overlay" id="craftScreen" aria-hidden="true">
@@ -123,7 +131,7 @@
             <div class="recipes" id="recipeList"></div>
           </div>
           <footer class="craft-footer">
-            <span>Resources are shared between both players</span>
+            <span id="craftShareCopy">Forge resources collected in the wild</span>
             <div id="craftMaterials"></div>
           </footer>
         </div>
@@ -151,14 +159,15 @@
             <div><b id="statCrafted">0</b><span>CRAFTED</span></div>
           </div>
           <button class="primary-button small" id="restartButton"><span>PLAY AGAIN</span><b>↻</b></button>
+          <button class="text-button" id="changeModeButton">CHANGE GAME MODE</button>
         </div>
       </section>
     </section>
 
     <footer class="footer-bar">
-      <div><span class="online-dot"></span>2 PLAYERS READY</div>
+      <div><span class="online-dot"></span><span id="modeStatus">SOLO READY</span></div>
       <div class="footer-tip"><kbd>C</kbd> CRAFT ANYWHERE <span>·</span> Monsters get stronger each wave</div>
-      <div>COOPERATIVE WORLD <b>∞</b></div>
+      <div><span id="worldMode">SOLO WORLD</span> <b>∞</b></div>
     </footer>
   </main>
   <script src="game.js"></script>
